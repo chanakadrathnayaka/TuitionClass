@@ -31,20 +31,14 @@ public class SignInServlet extends HttpServlet {
         user.setUsername(request.getParameter("loginUserName"));
         user.setPassword(request.getParameter("loginPassword").toCharArray());
 
-        String page;
         User existingUser = this.userManager.getUser(user);
         if (existingUser == null) {
-            page = "service-pages/user-not-found.jsp";
-            RequestDispatcher view = request.getRequestDispatcher(page);
+            RequestDispatcher view = request.getRequestDispatcher("service-pages/user-not-found.jsp");
             view.forward(request, response);
         } else {
             HttpSession session = request.getSession();
             session.setAttribute("user", existingUser);
             session.setMaxInactiveInterval(30 * 60);
-            Cookie userName = new Cookie("USER_NAME", user.getUsername());
-            userName.setMaxAge(30 * 60);
-            userName.setHttpOnly(true);
-            response.addCookie(userName);
             if (existingUser.getUserType().equals(UserType.STUDENT)) {
                 response.sendRedirect("student-dashboard");
             } else {

@@ -13,7 +13,7 @@
 <div class="container-fluid">
     <%@include file="utils/header.jsp" %>
     <div class="row my-2 justify-content-center">
-        <div class="col-4">
+        <div class="col-8">
             <div class="card">
                 <div class="card-header bg-primary text-white h4">
                     Sign Up

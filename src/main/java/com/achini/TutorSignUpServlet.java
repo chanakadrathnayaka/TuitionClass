@@ -1,6 +1,5 @@
 package com.achini;
 
-import com.achini.dataaccess.StudentDataAccess;
 import com.achini.models.Fee;
 import com.achini.models.Subject;
 import com.achini.models.Tutor;
@@ -38,8 +37,7 @@ public class TutorSignUpServlet extends HttpServlet {
 
         req.getParameterMap();
         Tutor tutor = extractTutor(req.getParameterMap());
-        this.tutorManager.saveTutorDetails(tutor);
-        //        todo set user attrib
+        this.tutorManager.registerTutor(tutor);
         RequestDispatcher view = req.getRequestDispatcher("tutor-dashboard.jsp");
         view.forward(req, resp);
     }

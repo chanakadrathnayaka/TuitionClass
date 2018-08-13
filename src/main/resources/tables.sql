@@ -34,13 +34,13 @@ CREATE TABLE Tutors (
 );
 
 CREATE TABLE Fees (
-  feeId     int auto_increment not null,
-  subjectId int                not null,
-  grade     int                not null,
-  tutorId   int                not null,
-  amount    bigint             not null default 0,
-  classType varchar(20)        not null,
-  primary key (feeId),
+  feeId     int auto_increment unique not null,
+  subjectId int                       not null,
+  grade     int                       not null,
+  tutorId   int                       not null,
+  amount    bigint                    not null default 0,
+  classType varchar(20)               not null,
+  primary key (tutorId, grade, subjectId, classType),
   foreign key (subjectId) references Subjects (subjectId),
   foreign key (tutorId) references Tutors (tutorId)
 );
