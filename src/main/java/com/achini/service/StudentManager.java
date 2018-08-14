@@ -1,9 +1,9 @@
 package com.achini.service;
 
 import com.achini.dataaccess.StudentDataAccess;
+import com.achini.dataaccess.StudentEnrollDataAccess;
 import com.achini.dataaccess.UserDataAccess;
 import com.achini.models.Student;
-import com.achini.models.Tutor;
 import com.achini.models.User;
 
 import java.util.List;
@@ -15,14 +15,18 @@ public class StudentManager {
 
     private StudentDataAccess studentDataAccess;
     private UserDataAccess userDataAccess;
+    private StudentEnrollDataAccess studentEnrollDataAccess;
 
     public StudentManager() {
         studentDataAccess = new StudentDataAccess();
         userDataAccess = new UserDataAccess();
+        studentEnrollDataAccess = new StudentEnrollDataAccess();
     }
 
-    public boolean registerStudent(Student student) {
-        return studentDataAccess.insertStudent(student);
+    public void registerStudent(Student student) {
+        int studentId = studentDataAccess.insertStudent(student);
+        student.setStudentId(studentId);
+        studentEnrollDataAccess.insertStudentEnroll(student);
     }
 
     public List<Student> getAllStudent() {
@@ -31,6 +35,9 @@ public class StudentManager {
 
     public Student getStudent(User user) {
         Student student = studentDataAccess.getStudent(user.getUserId());
+        if (student == null) {
+            student = new Student();
+        }
         student.setUsername(user.getUsername());
         student.setUserId(user.getUserId());
         student.setBirthDate(user.getBirthDate());
@@ -41,7 +48,7 @@ public class StudentManager {
     }
 
     public User saveStudent(Student student) {
-        studentDataAccess.insertStudent(student);
+        studentDataAccess.updateStudent(student);
         return userDataAccess.updateUser(student);
     }
 }

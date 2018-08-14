@@ -1,6 +1,6 @@
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.Iterator" %>
 <%@ page import="com.achini.models.Subject" %>
+<%@ page import="java.util.Iterator" %>
+<%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html lang="en">
 <%@include file="utils/headContent.jsp" %>
@@ -15,7 +15,7 @@
                 </div>
                 <div class="card-body">
                     <form action="tutor-sign-up" method="POST">
-                        <div class="form-group">
+                        <div class="form-group d-none">
                             <label for="signUpUserId">User Id</label>
                             <input type="text" class="form-control form-control-sm" id="signUpUserId"
                                    name="signUpUserId" readonly value="${requestScope.signUpUserId}">
@@ -29,7 +29,7 @@
                         <div class="form-group">
                             <label>Subjects</label>
                             <button id="addSubjectBtn" type="button" title="Add a subject"
-                                    class="btn btn-sm btn-outline-primary rounded float-right">
+                                    class="btn btn-sm btn-outline-primary rounded-circle float-right">
                                 <i class="fas fa-plus"></i></button>
                             <div id="subjectContainer">
                                 <div id="subjectTemplate" class="form-inline">
@@ -49,14 +49,10 @@
                                     <select title="Select grade"
                                             class="custom-select custom-select-sm my-2 border-right-0 rounded-0 custom-select-middle w-15"
                                             name="signUpGrade">
-                                        <option selected value="6">6</option>
-                                        <option value="7">7</option>
-                                        <option value="8">8</option>
-                                        <option value="9">9</option>
-                                        <option value="10">10</option>
-                                        <option value="11">11</option>
-                                        <option value="12">12</option>
-                                        <option value="13">13</option>
+                                        <%
+                                            for (int grade : (int[]) request.getAttribute("supportedGrades"))
+                                                out.println("<option value=\"" + grade + "\">" + grade + "</option>");
+                                        %>
                                     </select>
                                     <select title="Select Class Type"
                                             class="custom-select custom-select-sm my-2 border-right-0 rounded-0 custom-select-middle w-25"

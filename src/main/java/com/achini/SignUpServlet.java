@@ -1,10 +1,10 @@
 package com.achini;
 
-import com.achini.dataaccess.UserDataAccess;
 import com.achini.models.User;
 import com.achini.models.types.UserType;
 import com.achini.service.SubjectManager;
 import com.achini.service.UserManager;
+import com.achini.servlets.utils.Constants;
 import com.achini.servlets.utils.WebUtils;
 
 import javax.servlet.RequestDispatcher;
@@ -36,22 +36,24 @@ public class SignUpServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        User user = extractUser(req.getParameterMap());
+        User user = extractUser(request.getParameterMap());
+        request.getSession().setAttribute("user", user);
         int userId = userManager.registerUser(user);
 
-        req.setAttribute("signUpUserId", userId);
+        request.setAttribute("signUpUserId", userId);
+        request.setAttribute("supportedGrades", Constants.SUPPORTED_GRADES);
+        request.setAttribute("subjects", subjectManager.getAllSubject());
 
         String page;
         if (user.getUserType().equals(UserType.STUDENT)) {
             page = "student-sign-up.jsp";
         } else {
-            req.setAttribute("subjects", subjectManager.getAllSubject());
             page = "tutor-sign-up.jsp";
         }
-        RequestDispatcher view = req.getRequestDispatcher(page);
-        view.forward(req, resp);
+        RequestDispatcher view = request.getRequestDispatcher(page);
+        view.forward(request, response);
     }
 
     private User extractUser(Map<String, String[]> paramMap) {

@@ -1,8 +1,7 @@
 package com.achini.models;
 
-import com.sun.istack.internal.NotNull;
-
-import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Chanaka Rathnayaka
@@ -10,8 +9,8 @@ import java.util.List;
 public class Tutor extends User {
     private int tutorId;
     private String highestQualification;
-    private List<Subject> subjects;
-    private List<Student> students;
+    private Set<Subject> subjects;
+    private Set<Student> students;
 
     public void setTutorId(int tutorId) {
         this.tutorId = tutorId;
@@ -29,19 +28,35 @@ public class Tutor extends User {
         this.highestQualification = highestQualification;
     }
 
-    public List<Subject> getSubjects() {
+    public Set<Subject> getSubjects() {
         return subjects;
     }
 
-    public void setSubjects(List<Subject> subjects) {
+    public void setSubjects(Set<Subject> subjects) {
         this.subjects = subjects;
     }
 
-    public List<Student> getStudents() {
+    public Set<Student> getStudents() {
         return students;
     }
 
-    public void setStudents(List<Student> students) {
+    public void setStudents(Set<Student> students) {
         this.students = students;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Tutor)) return false;
+        Tutor tutor = (Tutor) o;
+        return tutorId == tutor.tutorId &&
+                Objects.equals(subjects, tutor.subjects) &&
+                Objects.equals(students, tutor.students);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(tutorId, subjects, students);
     }
 }

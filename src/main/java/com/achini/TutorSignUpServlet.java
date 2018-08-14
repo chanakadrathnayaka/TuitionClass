@@ -13,9 +13,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Chanaka Rathnayaka
@@ -33,13 +33,13 @@ public class TutorSignUpServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        req.getParameterMap();
-        Tutor tutor = extractTutor(req.getParameterMap());
+        request.getParameterMap();
+        Tutor tutor = extractTutor(request.getParameterMap());
         this.tutorManager.registerTutor(tutor);
-        RequestDispatcher view = req.getRequestDispatcher("tutor-dashboard.jsp");
-        view.forward(req, resp);
+        RequestDispatcher view = request.getRequestDispatcher("tutor-dashboard.jsp");
+        view.forward(request, response);
     }
 
     private Tutor extractTutor(Map<String, String[]> paramMap) {
@@ -52,14 +52,14 @@ public class TutorSignUpServlet extends HttpServlet {
         return student;
     }
 
-    private List<Subject> extractSubject(Map<String, String[]> paramMap) {
+    private Set<Subject> extractSubject(Map<String, String[]> paramMap) {
 
         String[] subjectIds = paramMap.get("signUpSubjects");
         String[] grades = paramMap.get("signUpGrade");
         String[] classTypes = paramMap.get("signUpClassType");
         String[] fees = paramMap.get("signUpFee");
 
-        List<Subject> subjects = new ArrayList<>(subjectIds.length);
+        Set<Subject> subjects = new HashSet<>(subjectIds.length);
 
         for (int i = 0; i < subjectIds.length; i++) {
             Subject subject = new Subject();

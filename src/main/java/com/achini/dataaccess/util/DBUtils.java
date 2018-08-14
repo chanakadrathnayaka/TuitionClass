@@ -6,13 +6,15 @@ import com.achini.models.types.UserType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Chanaka Rathnayaka
  */
 public class DBUtils {
 
-    public static Tutor getTutor(ResultSet resultSet) throws SQLException {
+    public static Tutor getOnlyTutor(ResultSet resultSet) throws SQLException {
         Tutor tutor = new Tutor();
         tutor.setTutorId(resultSet.getInt("tutorId"));
         tutor.setHighestQualification(resultSet.getString("qualification"));
@@ -49,5 +51,24 @@ public class DBUtils {
         subject.setFee(fee);
 
         return subject;
+    }
+
+    public static Tutor getTutor(ResultSet resultSet) throws SQLException {
+        Tutor tutor = new Tutor();
+        tutor.setName(resultSet.getString("name"));
+        tutor.setEmail(resultSet.getString("email"));
+        tutor.setTutorId(resultSet.getInt("tutorId"));
+        tutor.setHighestQualification(resultSet.getString("qualification"));
+        Fee fee = new Fee(resultSet.getDouble("amount"), ClassType.valueOf(resultSet.getString("classType")));
+        fee.setFeeId(resultSet.getInt("feeId"));
+        Subject subject = new Subject();
+        subject.setSubjectId(resultSet.getInt("subjectId"));
+        subject.setGrade(resultSet.getInt("grade"));
+        subject.setName(resultSet.getString("subjectName"));
+        subject.setFee(fee);
+        Set<Subject> subjects = new HashSet<>(1);
+        subjects.add(subject);
+        tutor.setSubjects(subjects);
+        return tutor;
     }
 }

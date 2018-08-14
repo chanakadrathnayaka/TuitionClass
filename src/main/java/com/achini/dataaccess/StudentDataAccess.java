@@ -19,6 +19,13 @@ public class StudentDataAccess {
     private static final String STUDENT_UPDATE_QUERY = "UPDATE " +
             "Students set grade=?,school=? WHERE studentId=?";
 
+    private static final String COMPLETE_STUDENT_SELECT_QUERY = "select * from StudentEnroll as SE " +
+            "join Fees F on SE.feeId = F.feeId " +
+            "join Subjects SB on SE.subjectId = SB.subjectId " +
+            "join Tutors T on SE.tutorId = T.tutorId " +
+            "join Students ST on SE.studentId = ST.studentId " +
+            "where ST.userId = ?";
+
     public List<Student> getAllStudent() {
 
         DBConnectionManager connectionManager = new DBConnectionManager();
@@ -40,28 +47,33 @@ public class StudentDataAccess {
         return students;
     }
 
-    public boolean insertStudent(Student student) {
+    public int insertStudent(Student student) {
 
         DBConnectionManager connectionManager = new DBConnectionManager();
         Connection connection = null;
         PreparedStatement statement = null;
-        int result = 0;
+        ResultSet resultSet = null;
+        int studentId = -1;
         try {
             connection = connectionManager.getConnection();
-            statement = connection.prepareStatement(STUDENT_INSERT_QUERY);
+            statement = connection.prepareStatement(STUDENT_INSERT_QUERY, Statement.RETURN_GENERATED_KEYS);
 
             statement.setInt(1, student.getGrade());
             statement.setInt(2, student.getUserId());
             statement.setString(3, student.getSchool());
 
-            result = statement.executeUpdate();
+            if (statement.executeUpdate() == 1) {
+                resultSet = statement.getGeneratedKeys();
+                if (resultSet.next()) {
+                    studentId = resultSet.getInt(1);
+                }
+            }
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         } finally {
             DBConnectionManager.closeResources(null, statement, connection);
         }
-        return result == 1;
-
+        return studentId;
     }
 
     public boolean updateStudent(Student student) {
@@ -98,7 +110,7 @@ public class StudentDataAccess {
         try {
             connection = connectionManager.getConnection();
             statement = connection
-                    .prepareStatement("select * from Students where userId=?");
+                    .prepareStatement(COMPLETE_STUDENT_SELECT_QUERY);
             statement.setInt(1, userId);
             resultSet = statement.executeQuery();
             if (resultSet.next()) {

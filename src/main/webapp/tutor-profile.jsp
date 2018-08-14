@@ -1,9 +1,9 @@
 <%@ page import="com.achini.models.Subject" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.Iterator" %>
-<%@ page import="com.achini.models.Student" %>
 <%@ page import="com.achini.models.Tutor" %>
-<%@ page import="com.achini.models.types.ClassType" %><%--
+<%@ page import="com.achini.models.types.ClassType" %>
+<%@ page import="java.util.Iterator" %>
+<%@ page import="java.util.List" %>
+<%--
   Created by IntelliJ IDEA.
   User: chanaka
   Date: 8/12/18
@@ -75,14 +75,14 @@
                         <div class="form-group">
                             <label>Subjects</label>
                             <button id="addSubjectBtn" type="button" title="Add a subject"
-                                    class="btn btn-sm btn-outline-primary rounded float-right">
+                                    class="btn btn-sm btn-outline-primary rounded-circle float-right">
                                 <i class="fas fa-plus"></i></button>
                             <div id="subjectContainer">
                                 <%for (Subject selectedSubject : tutor.getSubjects()) { %>
                                 <div class="form-inline">
                                     <select title="Select subject"
                                             class="custom-select custom-select-sm my-2 custom-select-left w-40"
-                                            name="updateSubjects" readonly>
+                                            name="updateSubjects" disabled>
                                         <%
                                             List<Subject> result = (List<Subject>) request.getAttribute("subjects");
                                             Iterator<Subject> it = result.iterator();
@@ -94,7 +94,7 @@
                                     </select>
                                     <select title="Select grade"
                                             class="custom-select custom-select-sm my-2 border-right-0 rounded-0 custom-select-middle w-15"
-                                            name="updateGrade" readonly>
+                                            name="updateGrade" disabled>
                                         <%
                                             for (int grade : (int[]) request.getAttribute("supportedGrades"))
                                                 out.println("<option " + (grade == selectedSubject.getGrade() ? "selected" : "") + " value=\"" + grade + "\">" + grade + "</option>");
@@ -102,7 +102,7 @@
                                     </select>
                                     <select title="Select Class Type"
                                             class="custom-select custom-select-sm my-2 border-right-0 rounded-0 custom-select-middle w-25"
-                                            name="updateClassType" readonly>
+                                            name="updateClassType" disabled>
                                         <%
                                             for (ClassType type : (ClassType[]) request.getAttribute("classTypes"))
                                                 out.println("<option " + (type.equals(selectedSubject.getFee().getClassType()) ? "selected" : "") + " value=\"" + type + "\">" + type + "</option>");

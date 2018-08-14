@@ -18,9 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Chanaka Rathnayaka
@@ -45,13 +45,13 @@ public class UserProfileServlet extends HttpServlet {
         User user = (User) request.getSession().getAttribute("user");
         String page;
         request.setAttribute("password", String.valueOf(user.getPassword()));
+        request.setAttribute("supportedGrades", Constants.SUPPORTED_GRADES);
         if (user.getUserType().equals(UserType.STUDENT)) {
             Student student = this.studentManager.getStudent(user);
             request.setAttribute("student", student);
             page = "student-profile.jsp";
         } else {
             Tutor tutor = this.tutorManager.getTutor(user);
-            request.setAttribute("supportedGrades", Constants.SUPPORTED_GRADES);
             request.setAttribute("classTypes", ClassType.values());
             request.setAttribute("tutor", tutor);
             request.setAttribute("subjects", subjectManager.getAllSubject());
@@ -114,14 +114,14 @@ public class UserProfileServlet extends HttpServlet {
         return tutor;
     }
 
-    private List<Subject> extractSubject(Map<String, String[]> paramMap) {
+    private Set<Subject> extractSubject(Map<String, String[]> paramMap) {
 
         String[] subjectIds = paramMap.get("updateSubjects");
         String[] grades = paramMap.get("updateGrade");
         String[] classTypes = paramMap.get("updateClassType");
         String[] fees = paramMap.get("updateFee");
 
-        List<Subject> subjects = new ArrayList<>(subjectIds.length);
+        Set<Subject> subjects = new HashSet<>(subjectIds.length);
 
         for (int i = 0; i < subjectIds.length; i++) {
             Subject subject = new Subject();

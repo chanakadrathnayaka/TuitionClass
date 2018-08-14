@@ -1,5 +1,7 @@
 package com.achini.models;
 
+import java.util.Objects;
+
 /**
  * @author Chanaka Rathnayaka
  */
@@ -39,5 +41,21 @@ public class Subject {
 
     public void setFee(Fee fee) {
         this.fee = fee;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Subject)) return false;
+        Subject subject = (Subject) o;
+        return subjectId == subject.subjectId &&
+                grade == subject.grade &&
+                Objects.equals(fee, subject.fee);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(subjectId, grade, fee);
     }
 }

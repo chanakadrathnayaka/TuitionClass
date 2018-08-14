@@ -1,11 +1,11 @@
 CREATE TABLE Users (
-  userId       int auto_increment  not null,
-  name         varchar(255)        not null,
-  email        varchar(100)        not null,
+  userId       int auto_increment not null,
+  name         varchar(255)       not null,
+  email        varchar(100)       not null,
   username     varchar(20) unique not null,
   password     varchar(20)        not null,
   userType     varchar(10)        not null,
-  enrolledDate date                not null,
+  enrolledDate date               not null,
   birthDate    date,
   primary key (userId)
 );
@@ -20,8 +20,8 @@ CREATE TABLE Students (
 );
 
 CREATE TABLE Subjects (
-  subjectId int auto_increment not null,
-  name      varchar(255)       not null,
+  subjectId   int auto_increment not null,
+  subjectName varchar(255)       not null,
   primary key (subjectId)
 );
 
@@ -46,30 +46,33 @@ CREATE TABLE Fees (
 );
 
 CREATE TABLE FeePayment (
-  feeId     int not null,
-  studentId int not null,
+  feeId       int  not null,
+  studentId   int  not null,
+  paid        varchar(5) default 0,
+  paymentDate date not null,
   foreign key (feeId) references Fees (feeId),
   foreign key (studentId) references Students (studentId)
 );
 
-CREATE TABLE Teaching (
+CREATE TABLE TutorClasses (
   tutorId   int not null,
   subjectId int not null,
   feeId     int not null,
   grade     int not null,
+  primary key (tutorId, feeId),
   foreign key (tutorId) references Tutors (tutorId),
-  foreign key (feeId) references FeePayment (feeId),
+  foreign key (feeId) references Fees (feeId),
   foreign key (subjectId) references Subjects (subjectId)
 );
 
-CREATE TABLE Learning (
+CREATE TABLE StudentEnroll (
   studentId int not null,
   tutorId   int not null,
   subjectId int not null,
   feeId     int not null,
-  grade     int not null,
+  primary key (studentId, feeId),
   foreign key (tutorId) references Tutors (tutorId),
   foreign key (subjectId) references Subjects (subjectId),
-  foreign key (feeId) references FeePayment (feeId),
+  foreign key (feeId) references Fees (feeId),
   foreign key (studentId) references Students (studentId)
 );

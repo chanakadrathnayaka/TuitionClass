@@ -9,8 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Chanaka Rathnayaka
@@ -46,12 +46,12 @@ public class FeeDataAccess {
         }
     }
 
-    public List<Subject> getClasses(int tutorId) {
+    public Set<Subject> getClasses(int tutorId) {
         DBConnectionManager connectionManager = new DBConnectionManager();
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-        List<Subject> subjects = null;
+        Set<Subject> subjects = null;
 
         try {
             connection = connectionManager.getConnection();
@@ -59,7 +59,7 @@ public class FeeDataAccess {
                     .prepareStatement("select * from Fees where tutorId=?");
             statement.setInt(1, tutorId);
             resultSet = statement.executeQuery();
-            subjects = new ArrayList<>();
+            subjects = new HashSet<>();
             while (resultSet.next()) {
                 subjects.add(DBUtils.getSubject(resultSet));
             }

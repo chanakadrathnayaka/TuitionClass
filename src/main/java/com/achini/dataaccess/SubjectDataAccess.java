@@ -1,7 +1,6 @@
 package com.achini.dataaccess;
 
 import com.achini.dataaccess.util.DBConnectionManager;
-import com.achini.models.Student;
 import com.achini.models.Subject;
 
 import java.sql.*;
@@ -19,13 +18,13 @@ public class SubjectDataAccess {
         try (
                 Connection connection = connectionManager.getConnection();
                 Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("select * from Subjects");) {
+                ResultSet resultSet = statement.executeQuery("select * from Subjects")) {
 
             subjects = new ArrayList<>();
             while (resultSet.next()) {
                 Subject subject = new Subject();
                 subject.setSubjectId(resultSet.getInt("subjectId"));
-                subject.setName(resultSet.getString("name"));
+                subject.setName(resultSet.getString("subjectName"));
 
                 subjects.add(subject);
             }

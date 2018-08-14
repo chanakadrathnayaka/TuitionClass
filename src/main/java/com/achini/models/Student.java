@@ -1,6 +1,7 @@
 package com.achini.models;
 
-import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Chanaka Rathnayaka
@@ -11,7 +12,7 @@ public class Student extends User {
     private int studentId;
     private int grade;
     private String school;
-    private List<Tutor> tutors;
+    private Set<Tutor> tutors;
 
     public void setStudentId(int studentId) {
         this.studentId = studentId;
@@ -37,11 +38,27 @@ public class Student extends User {
         this.school = school;
     }
 
-    public List<Tutor> getTutors() {
+    public Set<Tutor> getTutors() {
         return tutors;
     }
 
-    public void setTutors(List<Tutor> tutors) {
+    public void setTutors(Set<Tutor> tutors) {
         this.tutors = tutors;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Student)) return false;
+        Student student = (Student) o;
+        return studentId == student.studentId &&
+                grade == student.grade &&
+                Objects.equals(tutors, student.tutors);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(studentId, grade, tutors);
     }
 }

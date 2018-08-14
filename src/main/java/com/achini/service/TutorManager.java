@@ -6,8 +6,9 @@ import com.achini.dataaccess.UserDataAccess;
 import com.achini.models.Subject;
 import com.achini.models.Tutor;
 import com.achini.models.User;
+import com.achini.models.types.ClassType;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Chanaka Rathnayaka
@@ -29,8 +30,8 @@ public class TutorManager {
     }
 
     public Tutor getTutor(User user) {
-        Tutor tutor = tutorDataAccess.getTutor(user.getUserId());
-        List<Subject> subjects = feeDataAccess.getClasses(tutor.getTutorId());
+        Tutor tutor = tutorDataAccess.getTutorForUser(user.getUserId());
+        Set<Subject> subjects = feeDataAccess.getClasses(tutor.getTutorId());
         tutor.setUsername(user.getUsername());
         tutor.setUserId(user.getUserId());
         tutor.setBirthDate(user.getBirthDate());
@@ -45,5 +46,33 @@ public class TutorManager {
         tutorDataAccess.updateTutor(tutor);
         this.feeDataAccess.insertOrUpdateFee(tutor);
         return userDataAccess.updateUser(tutor);
+    }
+
+    public Map<String, Map<ClassType, List<Tutor>>> getTutorsForGrade(int grade) {
+        List<Tutor> tutors = tutorDataAccess.getTutorsForGrade(grade);
+        Map<String, Map<ClassType, List<Tutor>>> subjectMap = new HashMap<>();
+        for (Tutor tutor : tutors) {
+            Subject subject = tutor.getSubjects().iterator().next();
+            String subjectMapKey = subject.getSubjectId() + "~" + subject.getName();
+
+            if (subjectMap.containsKey(subjectMapKey)) {
+                Map<ClassType, List<Tutor>> classTypeTutorMap = subjectMap.get(subjectMapKey);
+                if (classTypeTutorMap.containsKey(subject.getFee().getClassType())) {
+                    List<Tutor> tutorList = classTypeTutorMap.get(subject.getFee().getClassType());
+                    tutorList.add(tutor);
+                } else {
+                    List<Tutor> tutorList = new ArrayList<>();
+                    tutorList.add(tutor);
+                    classTypeTutorMap.put(subject.getFee().getClassType(), tutorList);
+                }
+            } else {
+                Map<ClassType, List<Tutor>> classTypeTutorMap = new HashMap<>();
+                subjectMap.put(subjectMapKey, classTypeTutorMap);
+                List<Tutor> tutorList = new ArrayList<>();
+                tutorList.add(tutor);
+                classTypeTutorMap.put(subject.getFee().getClassType(), tutorList);
+            }
+        }
+        return subjectMap;
     }
 }

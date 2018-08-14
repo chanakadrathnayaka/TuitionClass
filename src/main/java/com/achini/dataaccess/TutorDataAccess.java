@@ -2,10 +2,11 @@ package com.achini.dataaccess;
 
 import com.achini.dataaccess.util.DBConnectionManager;
 import com.achini.dataaccess.util.DBUtils;
-import com.achini.models.Student;
 import com.achini.models.Tutor;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Chanaka Rathnayaka
@@ -16,6 +17,11 @@ public class TutorDataAccess {
 
     private static final String TUTOR_UPDATE_QUERY = "UPDATE " +
             "Tutors set qualification=? WHERE tutorId=?";
+
+    private static final String TUTOR_FOR_GRADE_SELECT_QUERY = "SELECT * FROM Tutors T " +
+            "JOIN Fees F on T.tutorId = F.tutorId " +
+            "left join Subjects S on F.subjectId = S.subjectId " +
+            "left join Users U on T.userId = U.userId WHERE F.grade=?;";
 
     public int insertTutor(Tutor tutor) {
 
@@ -46,7 +52,7 @@ public class TutorDataAccess {
 
     }
 
-    public Tutor getTutor(int userId) {
+    public Tutor getTutorForUser(int userId) {
         DBConnectionManager connectionManager = new DBConnectionManager();
         Connection connection = null;
         PreparedStatement statement = null;
@@ -60,7 +66,7 @@ public class TutorDataAccess {
             statement.setInt(1, userId);
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                tutor = DBUtils.getTutor(resultSet);
+                tutor = DBUtils.getOnlyTutor(resultSet);
             }
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -92,5 +98,30 @@ public class TutorDataAccess {
         }
         return result == 1;
 
+    }
+
+    public List<Tutor> getTutorsForGrade(int grade) {
+        DBConnectionManager connectionManager = new DBConnectionManager();
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        List<Tutor> tutors = new ArrayList<>();
+
+        try {
+            connection = connectionManager.getConnection();
+            statement = connection
+                    .prepareStatement(TUTOR_FOR_GRADE_SELECT_QUERY);
+            statement.setInt(1, grade);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                tutors.add(DBUtils.getTutor(resultSet));
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            DBConnectionManager.closeResources(resultSet, statement, connection);
+        }
+
+        return tutors;
     }
 }
