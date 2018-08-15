@@ -48,7 +48,6 @@ CREATE TABLE Fees (
 CREATE TABLE FeePayment (
   feeId       int  not null,
   studentId   int  not null,
-  paid        varchar(5) default 0,
   paymentDate date not null,
   foreign key (feeId) references Fees (feeId),
   foreign key (studentId) references Students (studentId)
