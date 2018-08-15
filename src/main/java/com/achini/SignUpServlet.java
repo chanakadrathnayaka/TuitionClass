@@ -39,8 +39,9 @@ public class SignUpServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         User user = extractUser(request.getParameterMap());
-        request.getSession().setAttribute("user", user);
         int userId = userManager.registerUser(user);
+        user.setUserId(userId);
+        request.getSession().setAttribute("user", user);
 
         request.setAttribute("signUpUserId", userId);
         request.setAttribute("supportedGrades", Constants.SUPPORTED_GRADES);

@@ -6,7 +6,6 @@ import com.achini.models.Tutor;
 import com.achini.models.types.ClassType;
 import com.achini.service.TutorManager;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -35,11 +34,8 @@ public class TutorSignUpServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        request.getParameterMap();
-        Tutor tutor = extractTutor(request.getParameterMap());
-        this.tutorManager.registerTutor(tutor);
-        RequestDispatcher view = request.getRequestDispatcher("tutor-dashboard.jsp");
-        view.forward(request, response);
+        this.tutorManager.registerTutor(extractTutor(request.getParameterMap()));
+        response.sendRedirect("tutor-dashboard");
     }
 
     private Tutor extractTutor(Map<String, String[]> paramMap) {
