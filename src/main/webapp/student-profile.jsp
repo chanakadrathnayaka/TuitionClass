@@ -1,4 +1,5 @@
 <%@ page import="com.achini.models.Student" %>
+<%@ page import="com.achini.models.Subject" %>
 <%@ page import="com.achini.models.Tutor" %>
 <%--
   Created by IntelliJ IDEA.
@@ -81,6 +82,7 @@
                         </div>
                         <div class="form-group">
                             <label>Subjects</label>
+                            <small class="text-secondary"> You can not edit these later</small>
                             <button id="addSubjectBtn" type="button" title="Add a subject"
                                     class="btn btn-sm btn-outline-primary rounded-circle float-right"><i
                                     class="fas fa-plus"></i></button>
@@ -88,32 +90,33 @@
                                 <%
                                     if (student.getTutors() != null) {
                                         for (Tutor tutor : student.getTutors()) {
+                                            for (Subject subject : tutor.getSubjects()) {
+
                                 %>
-                                <div class="form-inline d-none">
+                                <div class="form-inline">
                                     <select title="Select subject"
                                             class="custom-select custom-select-sm my-2 custom-select-left w-25"
-                                            name="updateSubjects">
-                                        <option selected value="-1">-Select-</option>
+                                            disabled>
+                                        <option selected value="<%=subject.getSubjectId()%>"><%=subject.getName()%>
+                                        </option>
                                     </select>
                                     <select title="Select Class Type"
                                             class="custom-select custom-select-sm my-2 border-right-0 rounded-0 custom-select-middle w-25"
-                                            name="updateClassType">
-                                        <option selected value="-1">-Select-</option>
+                                            disabled>
+                                        <option selected
+                                                value="<%=subject.getFee().getClassType()%>"><%=subject.getFee().getClassType()%>
+                                        </option>
                                     </select>
                                     <select title="Select tutor"
                                             class="custom-select custom-select-sm my-2 custom-select-right w-50"
-                                            name="updateTutor">
-                                        <option selected value="-1">-Select-</option>
+                                            disabled>
+                                        <option selected value="<%=tutor.getTutorId()%>"><%=tutor.getName()%>
+                                        </option>
                                     </select>
-                                    <input type="number" class="form-control form-control-sm form-control-right d-none"
-                                           name="updateFeeId">
-                                    <input type="number" class="form-control form-control-sm form-control-right d-none"
-                                           name="updateFee">
                                 </div>
-                                <%
-                                        }
-                                    }
-                                %>
+                                <% }
+                                }
+                                }%>
                             </div>
                         </div>
                         <button type="submit" class="btn btn-sm btn-primary float-right w-25">Save</button>

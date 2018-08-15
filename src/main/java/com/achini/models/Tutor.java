@@ -49,14 +49,12 @@ public class Tutor extends User {
         if (this == o) return true;
         if (!(o instanceof Tutor)) return false;
         Tutor tutor = (Tutor) o;
-        return tutorId == tutor.tutorId &&
-                Objects.equals(subjects, tutor.subjects) &&
-                Objects.equals(students, tutor.students);
+        return tutorId == tutor.tutorId;
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(tutorId, subjects, students);
+        return Objects.hash(tutorId);
     }
 }

@@ -84,28 +84,24 @@
                                             class="custom-select custom-select-sm my-2 custom-select-left w-40"
                                             name="updateSubjects" disabled>
                                         <%
-                                            List<Subject> result = (List<Subject>) request.getAttribute("subjects");
-                                            Iterator<Subject> it = result.iterator();
-                                            while (it.hasNext()) {
-                                                Subject subject = it.next();
-                                                out.println("<option " + (subject.getSubjectId() == selectedSubject.getSubjectId() ? "selected" : "") + " value=\"" + subject.getSubjectId() + "\">" + subject.getName() + "</option>");
-                                            }
+                                            out.println("<option selected  value=\"" + selectedSubject.getSubjectId() + "\">" + selectedSubject.getName() + "</option>");
+                                            out.println("<input type=\"hidden\" name=\"updateSubjects\"  value=\"" + selectedSubject.getSubjectId() + "\">");
                                         %>
                                     </select>
                                     <select title="Select grade"
                                             class="custom-select custom-select-sm my-2 border-right-0 rounded-0 custom-select-middle w-15"
                                             name="updateGrade" disabled>
                                         <%
-                                            for (int grade : (int[]) request.getAttribute("supportedGrades"))
-                                                out.println("<option " + (grade == selectedSubject.getGrade() ? "selected" : "") + " value=\"" + grade + "\">" + grade + "</option>");
+                                            out.println("<option selected value=\"" + selectedSubject.getGrade() + "\">" + selectedSubject.getGrade() + "</option>");
+                                            out.println("<input type=\"hidden\" name=\"updateGrade\"  value=\"" + selectedSubject.getGrade() + "\">");
                                         %>
                                     </select>
                                     <select title="Select Class Type"
                                             class="custom-select custom-select-sm my-2 border-right-0 rounded-0 custom-select-middle w-25"
                                             name="updateClassType" disabled>
                                         <%
-                                            for (ClassType type : (ClassType[]) request.getAttribute("classTypes"))
-                                                out.println("<option " + (type.equals(selectedSubject.getFee().getClassType()) ? "selected" : "") + " value=\"" + type + "\">" + type + "</option>");
+                                            out.println("<option selected value=\"" + selectedSubject.getFee().getClassType() + "\">" + selectedSubject.getFee().getClassType() + "</option>");
+                                            out.println("<input type=\"hidden\" name=\"updateGrade\"  value=\"" + selectedSubject.getFee().getClassType() + "\">");
                                         %>
                                     </select>
                                     <input type="number" class="form-control form-control-sm form-control-right w-20"
@@ -133,7 +129,7 @@
             Iterator<Subject> it = result.iterator();
             while (it.hasNext()) {
                 Subject subject = it.next();
-                out.println("<option value=\""+subject.getSubjectId() + "\">" + subject.getName() + "</option>");
+                out.println("<option value=\"" + subject.getSubjectId() + "\">" + subject.getName() + "</option>");
             }
         %>
     </select>

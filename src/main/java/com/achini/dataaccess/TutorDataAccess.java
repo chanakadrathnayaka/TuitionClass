@@ -13,12 +13,12 @@ import java.util.List;
  */
 public class TutorDataAccess {
     private static final String TUTOR_INSERT_QUERY = "INSERT INTO " +
-            "Tutors(userId,qualification) VALUES (?,?)";
+            "Tutor(userId,qualification) VALUES (?,?)";
 
     private static final String TUTOR_UPDATE_QUERY = "UPDATE " +
-            "Tutors set qualification=? WHERE tutorId=?";
+            "Tutor set qualification=? WHERE tutorId=?";
 
-    private static final String TUTOR_FOR_GRADE_SELECT_QUERY = "SELECT * FROM Tutors T " +
+    private static final String TUTOR_FOR_GRADE_SELECT_QUERY = "SELECT * FROM Tutor T " +
             "JOIN Fees F on T.tutorId = F.tutorId " +
             "left join Subjects S on F.subjectId = S.subjectId " +
             "left join Users U on T.userId = U.userId WHERE F.grade=?;";
@@ -62,11 +62,12 @@ public class TutorDataAccess {
         try {
             connection = connectionManager.getConnection();
             statement = connection
-                    .prepareStatement("select * from Tutors where userId=?");
+                    .prepareStatement("select * from Tutor as T join Fees F on T.tutorId = F.tutorId join Subjects S on F.subjectId = S.subjectId join Users U on T.userId = U.userId where T.userId=?");
             statement.setInt(1, userId);
             resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                tutor = DBUtils.getOnlyTutor(resultSet);
+            tutor = new Tutor();
+            while (resultSet.next()) {
+                DBUtils.getTutor(tutor, resultSet);
             }
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -114,7 +115,9 @@ public class TutorDataAccess {
             statement.setInt(1, grade);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                tutors.add(DBUtils.getTutor(resultSet));
+                Tutor tutor = new Tutor();
+                DBUtils.getTutor(tutor, resultSet);
+                tutors.add(tutor);
             }
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();

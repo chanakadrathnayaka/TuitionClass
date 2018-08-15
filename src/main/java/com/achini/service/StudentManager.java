@@ -6,8 +6,6 @@ import com.achini.dataaccess.UserDataAccess;
 import com.achini.models.Student;
 import com.achini.models.User;
 
-import java.util.List;
-
 /**
  * @author Chanaka Rathnayaka
  */
@@ -29,10 +27,6 @@ public class StudentManager {
         studentEnrollDataAccess.insertStudentEnroll(student);
     }
 
-    public List<Student> getAllStudent() {
-        return studentDataAccess.getAllStudent();
-    }
-
     public Student getStudent(User user) {
         Student student = studentDataAccess.getStudent(user.getUserId());
         if (student == null) {
@@ -49,6 +43,7 @@ public class StudentManager {
 
     public User saveStudent(Student student) {
         studentDataAccess.updateStudent(student);
+        studentEnrollDataAccess.insertStudentEnroll(student);
         return userDataAccess.updateUser(student);
     }
 }

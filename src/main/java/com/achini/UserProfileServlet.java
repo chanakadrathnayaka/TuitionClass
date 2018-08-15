@@ -98,7 +98,27 @@ public class UserProfileServlet extends HttpServlet {
         student.setUserId(Integer.parseInt(paramMap.get("updateUserId")[0]));
         student.setGrade(Integer.parseInt(paramMap.get("updateGrade")[0]));
         student.setSchool(paramMap.get("updateSchool")[0]);
+        String[] tutorIds = paramMap.get("updateTutor");
+        String[] subjectIds = paramMap.get("updateSubjects");
+        String[] classTypes = paramMap.get("updateClassType");
+        String[] feeIds = paramMap.get("updateFeeId");
+        String[] feeAmounts = paramMap.get("updateFee");
+        Set<Tutor> tutors = new HashSet<>(tutorIds.length);
 
+        for (int i = 0; i < tutorIds.length; i++) {
+            Tutor tutor = new Tutor();
+            Set<Subject> subjects = new HashSet<>(1);
+            Subject subject = new Subject();
+            Fee fee = new Fee(Double.parseDouble(feeAmounts[i]), ClassType.valueOf(classTypes[i]));
+            fee.setFeeId(Integer.parseInt(feeIds[i]));
+            subject.setSubjectId(Integer.parseInt(subjectIds[i]));
+            subject.setFee(fee);
+            subjects.add(subject);
+            tutor.setTutorId(Integer.parseInt(tutorIds[i]));
+            tutor.setSubjects(subjects);
+            tutors.add(tutor);
+        }
+        student.setTutors(tutors);
         return student;
     }
 

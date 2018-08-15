@@ -8,7 +8,10 @@ import com.achini.models.Tutor;
 import com.achini.models.User;
 import com.achini.models.types.ClassType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Chanaka Rathnayaka
@@ -31,14 +34,12 @@ public class TutorManager {
 
     public Tutor getTutor(User user) {
         Tutor tutor = tutorDataAccess.getTutorForUser(user.getUserId());
-        Set<Subject> subjects = feeDataAccess.getClasses(tutor.getTutorId());
-        tutor.setUsername(user.getUsername());
+       /* tutor.setUsername(user.getUsername());
         tutor.setUserId(user.getUserId());
         tutor.setBirthDate(user.getBirthDate());
         tutor.setEmail(user.getEmail());
         tutor.setEnrolledDate(user.getEnrolledDate());
-        tutor.setName(user.getName());
-        tutor.setSubjects(subjects);
+        tutor.setName(user.getName());*/
         return tutor;
     }
 

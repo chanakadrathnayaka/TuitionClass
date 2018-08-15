@@ -42,7 +42,7 @@ CREATE TABLE Fees (
   classType varchar(20)               not null,
   primary key (tutorId, grade, subjectId, classType),
   foreign key (subjectId) references Subjects (subjectId),
-  foreign key (tutorId) references Tutors (tutorId)
+  foreign key (tutorId) references Tutor (tutorId)
 );
 
 CREATE TABLE FeePayment (
@@ -60,7 +60,7 @@ CREATE TABLE TutorClasses (
   feeId     int not null,
   grade     int not null,
   primary key (tutorId, feeId),
-  foreign key (tutorId) references Tutors (tutorId),
+  foreign key (tutorId) references Tutor (tutorId),
   foreign key (feeId) references Fees (feeId),
   foreign key (subjectId) references Subjects (subjectId)
 );
@@ -71,7 +71,7 @@ CREATE TABLE StudentEnroll (
   subjectId int not null,
   feeId     int not null,
   primary key (studentId, feeId),
-  foreign key (tutorId) references Tutors (tutorId),
+  foreign key (tutorId) references Tutor (tutorId),
   foreign key (subjectId) references Subjects (subjectId),
   foreign key (feeId) references Fees (feeId),
   foreign key (studentId) references Students (studentId)

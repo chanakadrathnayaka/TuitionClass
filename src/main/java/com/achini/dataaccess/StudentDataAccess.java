@@ -5,8 +5,6 @@ import com.achini.dataaccess.util.DBUtils;
 import com.achini.models.Student;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Chanaka Rathnayaka
@@ -19,33 +17,7 @@ public class StudentDataAccess {
     private static final String STUDENT_UPDATE_QUERY = "UPDATE " +
             "Students set grade=?,school=? WHERE studentId=?";
 
-    private static final String COMPLETE_STUDENT_SELECT_QUERY = "select * from StudentEnroll as SE " +
-            "join Fees F on SE.feeId = F.feeId " +
-            "join Subjects SB on SE.subjectId = SB.subjectId " +
-            "join Tutors T on SE.tutorId = T.tutorId " +
-            "join Students ST on SE.studentId = ST.studentId " +
-            "where ST.userId = ?";
-
-    public List<Student> getAllStudent() {
-
-        DBConnectionManager connectionManager = new DBConnectionManager();
-        List<Student> students = null;
-        try (
-                Connection connection = connectionManager.getConnection();
-                Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("select * from Students");) {
-
-            students = new ArrayList<>();
-            while (resultSet.next()) {
-                Student student = DBUtils.getStudent(resultSet);
-                students.add(student);
-            }
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return students;
-    }
+    private static final String COMPLETE_STUDENT_SELECT_QUERY = "select * from StudentEnroll as SE join Fees F on SE.feeId = F.feeId join Subjects SB on SE.subjectId = SB.subjectId join Tutor T on SE.tutorId = T.tutorId join Students ST on SE.studentId = ST.studentId join Users U on T.userId = U.userId where ST.userId = ?";
 
     public int insertStudent(Student student) {
 
@@ -113,8 +85,9 @@ public class StudentDataAccess {
                     .prepareStatement(COMPLETE_STUDENT_SELECT_QUERY);
             statement.setInt(1, userId);
             resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                student = DBUtils.getStudent(resultSet);
+            student = new Student();
+            while (resultSet.next()) {
+                DBUtils.getStudent(student, resultSet);
             }
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
