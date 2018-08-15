@@ -18,7 +18,7 @@
     $("select#signUpGrade").on('change', getTutorsForGrade);
 
     function getTutorsForGrade() {
-        jQuery.getJSON(`/tutors/grade/${$("select#signUpGrade").val()}`,
+        jQuery.getJSON(`/TuitionClass/tutors/grade/${$("select#signUpGrade").val()}`,
             undefined, function (data) {
                 tutorForGrade = data;
             });
