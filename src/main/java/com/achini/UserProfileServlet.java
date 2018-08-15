@@ -96,6 +96,7 @@ public class UserProfileServlet extends HttpServlet {
         Student student = new Student();
         extractUser(paramMap, student);
         student.setUserId(Integer.parseInt(paramMap.get("updateUserId")[0]));
+        student.setStudentId(Integer.parseInt(paramMap.get("updateStudentId")[0]));
         student.setGrade(Integer.parseInt(paramMap.get("updateGrade")[0]));
         student.setSchool(paramMap.get("updateSchool")[0]);
         String[] tutorIds = paramMap.get("updateTutor");

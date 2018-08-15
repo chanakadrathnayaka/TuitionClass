@@ -101,7 +101,7 @@
                                             name="updateClassType" disabled>
                                         <%
                                             out.println("<option selected value=\"" + selectedSubject.getFee().getClassType() + "\">" + selectedSubject.getFee().getClassType() + "</option>");
-                                            out.println("<input type=\"hidden\" name=\"updateGrade\"  value=\"" + selectedSubject.getFee().getClassType() + "\">");
+                                            out.println("<input type=\"hidden\" name=\"updateClassType\"  value=\"" + selectedSubject.getFee().getClassType() + "\">");
                                         %>
                                     </select>
                                     <input type="number" class="form-control form-control-sm form-control-right w-20"

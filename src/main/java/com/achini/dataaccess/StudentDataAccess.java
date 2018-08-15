@@ -17,7 +17,7 @@ public class StudentDataAccess {
     private static final String STUDENT_UPDATE_QUERY = "UPDATE " +
             "Students set grade=?,school=? WHERE studentId=?";
 
-    private static final String COMPLETE_STUDENT_SELECT_QUERY = "select * from StudentEnroll as SE join Fees F on SE.feeId = F.feeId join Subjects SB on SE.subjectId = SB.subjectId join Tutor T on SE.tutorId = T.tutorId join Students ST on SE.studentId = ST.studentId join Users U on T.userId = U.userId where ST.userId = ?";
+    private static final String COMPLETE_STUDENT_SELECT_QUERY = "select * from StudentEnroll as SE join Fees F on SE.feeId = F.feeId join Subjects SB on SE.subjectId = SB.subjectId join Tutors T on SE.tutorId = T.tutorId join Students ST on SE.studentId = ST.studentId join Users U on T.userId = U.userId where ST.userId = ?";
 
     public int insertStudent(Student student) {
 

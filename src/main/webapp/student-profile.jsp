@@ -82,7 +82,6 @@
                         </div>
                         <div class="form-group">
                             <label>Subjects</label>
-                            <small class="text-secondary"> You can not edit these later</small>
                             <button id="addSubjectBtn" type="button" title="Add a subject"
                                     class="btn btn-sm btn-outline-primary rounded-circle float-right"><i
                                     class="fas fa-plus"></i></button>
@@ -110,7 +109,8 @@
                                     <select title="Select tutor"
                                             class="custom-select custom-select-sm my-2 custom-select-right w-50"
                                             disabled>
-                                        <option selected value="<%=tutor.getTutorId()%>"><%=tutor.getName()%>
+                                        <option selected
+                                                value="<%=tutor.getTutorId()%>"><%=tutor.getName() + " -Rs " + subject.getFee().getAmount()%>
                                         </option>
                                     </select>
                                 </div>

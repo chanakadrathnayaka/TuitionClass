@@ -36,6 +36,7 @@
                         </div>
                         <div class="form-group">
                             <label>Subjects</label>
+                            <small class="text-secondary"> You can not edit these later</small>
                             <button id="addSubjectBtn" type="button" title="Add a subject"
                                     class="btn btn-sm btn-outline-primary rounded-circle float-right"><i
                                     class="fas fa-plus"></i></button>

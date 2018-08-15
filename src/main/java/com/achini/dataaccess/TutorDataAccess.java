@@ -13,15 +13,17 @@ import java.util.List;
  */
 public class TutorDataAccess {
     private static final String TUTOR_INSERT_QUERY = "INSERT INTO " +
-            "Tutor(userId,qualification) VALUES (?,?)";
+            "Tutors(userId,qualification) VALUES (?,?)";
 
     private static final String TUTOR_UPDATE_QUERY = "UPDATE " +
-            "Tutor set qualification=? WHERE tutorId=?";
+            "Tutors set qualification=? WHERE tutorId=?";
 
-    private static final String TUTOR_FOR_GRADE_SELECT_QUERY = "SELECT * FROM Tutor T " +
+    private static final String TUTOR_FOR_GRADE_SELECT_QUERY = "SELECT * FROM Tutors T " +
             "JOIN Fees F on T.tutorId = F.tutorId " +
             "left join Subjects S on F.subjectId = S.subjectId " +
             "left join Users U on T.userId = U.userId WHERE F.grade=?;";
+
+    private static final String TUTOR_COMPLETE_SELECT_QUERY = "select * from Tutors as T join Fees F on T.tutorId = F.tutorId join Subjects S on F.subjectId = S.subjectId join Users U on T.userId = U.userId where T.userId=?";
 
     public int insertTutor(Tutor tutor) {
 
@@ -62,7 +64,7 @@ public class TutorDataAccess {
         try {
             connection = connectionManager.getConnection();
             statement = connection
-                    .prepareStatement("select * from Tutor as T join Fees F on T.tutorId = F.tutorId join Subjects S on F.subjectId = S.subjectId join Users U on T.userId = U.userId where T.userId=?");
+                    .prepareStatement(TUTOR_COMPLETE_SELECT_QUERY);
             statement.setInt(1, userId);
             resultSet = statement.executeQuery();
             tutor = new Tutor();

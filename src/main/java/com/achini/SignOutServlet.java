@@ -18,7 +18,7 @@ import java.io.IOException;
 public class SignOutServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //todo clear the session
+        request.getSession().setAttribute("user", null);
         RequestDispatcher view = request.getRequestDispatcher("index.jsp");
         view.forward(request, response);
     }
