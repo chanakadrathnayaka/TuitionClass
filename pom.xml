@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.achini</groupId>
-    <artifactId>TuitionClass</artifactId>
+    <artifactId>NadeeraTest</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>TuitionClass Maven Webapp</name>
+    <name>NadeeraTest Maven Webapp</name>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
 
@@ -47,7 +47,7 @@
     </dependencies>
 
     <build>
-        <finalName>TuitionClass</finalName>
+        <finalName>NadeeraTest</finalName>
         <pluginManagement>
             <plugins>
                 <plugin>
